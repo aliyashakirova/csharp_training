@@ -19,6 +19,15 @@ namespace WebAddressbookTests
         {
         }
 
+        public ContactHelper Modify(string index, ContactData newContactData)
+        {
+            driver.FindElement(By.XPath("//a[@href='edit.php?id=" + index + "']")).Click();
+            FillContactForm(newContactData);
+            driver.FindElement(By.Name("submit")).Click();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
         public ContactHelper Create(ContactData contact)
         {
             manager.Navigator.GoToAddNewContactPage();

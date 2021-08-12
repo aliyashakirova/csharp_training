@@ -4,15 +4,15 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
 
-namespace WebAddressbookTests
+namespace WebAddressbookTests.Tests
 {
     [TestFixture]
-    public class ContactRemovalTests : TestBase
+    public class GroupRemovalTests : TestBase
     {
         [Test]
-        public void ContactRemovalTest()
+        public void GroupRemovalTest()
         {
-            app.Contacts.Remove("0");
+            app.Groups.Remove(1);
         }
     }
 }
