@@ -61,17 +61,20 @@ namespace WebAddressbookTests
         }
         public ContactHelper RemoveContact()
         {
-            acceptNextAlert = true;
-            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
-            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
+            //acceptNextAlert = true;
+            driver.FindElement(By.CssSelector("input[name='selected[]']")).Click();
+            driver.FindElement(By.CssSelector("input[value='Delete']")).Click();
+            driver.SwitchTo().Alert().Accept();
+            //driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
         }
 
-        public ContactHelper SelectContact(string index)
-        {
-            driver.FindElement(By.Id(index)).Click();
-            return this;
-        }
+        //public ContactHelper SelectContact(string index)
+        //{
+        //   driver.FindElement(By.Id(index)).Click();
+        //    return this;
+        //}
 
         private string CloseAlertAndGetItsText()
         {
@@ -97,7 +100,7 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(string index)
         {
-            SelectContact(index);
+            //SelectContact(index);
             RemoveContact();
             manager.Navigator.GoToHomePage();
             return this;
