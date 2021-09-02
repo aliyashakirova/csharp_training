@@ -16,7 +16,16 @@ namespace WebAddressbookTests.Tests
             GroupData newGroupData = new GroupData("zzz");
             newGroupData.Header = "ttt";
             newGroupData.Footer = "qqq";
-            app.Groups.Modify(1, newGroupData);
+            app.Groups.Modify(newGroupData);
+        }
+
+        [Test]
+        public void GroupModificationTestOnlyName()
+        {
+            GroupData newGroupData = new GroupData("zzz");
+            newGroupData.Header = null;
+            newGroupData.Footer = null;
+            app.Groups.Modify(newGroupData);
         }
     }
 }

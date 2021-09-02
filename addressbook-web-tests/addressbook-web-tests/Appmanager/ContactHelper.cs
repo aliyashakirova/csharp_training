@@ -19,7 +19,7 @@ namespace WebAddressbookTests
         {
         }
 
-        public ContactHelper Modify(string index, ContactData newContactData)
+        public ContactHelper Modify(ContactData newContactData)
         {
             //driver.FindElement(By.XPath("//a[@href='edit.php?id=" + index + "']")).Click();
             driver.FindElement(By.CssSelector("tr[name*='entry']>td>a[href*='edit']")).Click();
@@ -40,17 +40,10 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            driver.FindElement(By.Name("company")).Click();
-            driver.FindElement(By.Name("company")).Clear();
-            driver.FindElement(By.Name("company")).SendKeys(contact.Company);
-            driver.FindElement(By.Name("address")).Click();
-            driver.FindElement(By.Name("address")).Clear();
-            driver.FindElement(By.Name("address")).SendKeys(contact.Address);
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("lastname"), contact.Lastname);
+            Type(By.Name("company"), contact.Company);
+            Type(By.Name("address"), contact.Address);
             return this;
         }
 
@@ -98,7 +91,7 @@ namespace WebAddressbookTests
             }
         }
 
-        public ContactHelper Remove(string index)
+        public ContactHelper Remove()
         {
             //SelectContact(index);
             RemoveContact();

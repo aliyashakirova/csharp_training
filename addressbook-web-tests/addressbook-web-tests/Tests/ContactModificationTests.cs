@@ -15,8 +15,17 @@ namespace WebAddressbookTests.Tests
             {
             ContactData newContactData = new ContactData("fn", "ln");
             newContactData.Company = "sdfsd";
-            newContactData.Address = "ewerr";
-            app.Contacts.Modify("0", newContactData);
+            newContactData.Address = "sdfsd";
+            app.Contacts.Modify(newContactData);
             }
+
+        [Test]
+        public void ContactModificationTestOnlyFirstNLastNames()
+        {
+            ContactData newContactData = new ContactData("aaa", "bbb");
+            newContactData.Company = null;
+            newContactData.Address = null;
+            app.Contacts.Modify(newContactData);
+        }
     }
 }

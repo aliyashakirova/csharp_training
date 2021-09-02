@@ -26,10 +26,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper Modify(int index, GroupData newGroupData)
+        public GroupHelper Modify(GroupData newGroupData)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup(index);
+            SelectGroup();
             InitGroupModification();
             FillGroupForm(newGroupData);
             SubmitGroupModification();
@@ -38,10 +38,10 @@ namespace WebAddressbookTests
         }
 
 
-        public GroupHelper Remove(int index)
+        public GroupHelper Remove()
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup(index);
+            SelectGroup();
             RemoveGroup();
             ReturnToGroupsPage();
             return this;
@@ -55,16 +55,12 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Id("content")).Click();
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
+
 
         public GroupHelper SubmitGroupCreation()
         {
@@ -78,9 +74,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper SelectGroup(int index)
+        public GroupHelper SelectGroup()
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + index + "]/input")).Click();
+            //driver.FindElement(By.XPath("//div[@id='content']/form/span[" + index + "]/input")).Click();
+            driver.FindElement(By.CssSelector("input[name='selected[]']")).Click();
             return this;
         }
 

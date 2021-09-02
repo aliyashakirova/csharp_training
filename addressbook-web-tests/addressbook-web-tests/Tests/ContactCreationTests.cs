@@ -18,7 +18,6 @@ namespace WebAddressbookTests.Tests
             app.Contacts.Create(contact);
         }
 
-
         [Test]
         public void EmptyContactCreationTest()
         {

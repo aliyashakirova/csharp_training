@@ -19,6 +19,6 @@ namespace WebAddressbookTests
         {
             app.Auth.Logout();
             app.Stop();
-        } 
+        }
     }
 }
