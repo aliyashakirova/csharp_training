@@ -98,5 +98,9 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             return this;
         }
+        public int GetContactNumber()
+        {
+            return driver.FindElements(By.Name("selected[]")).Count;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace WebAddressbookTests.Tests
 {
@@ -12,7 +13,15 @@ namespace WebAddressbookTests.Tests
         [Test]
         public void ContactRemovalTest()
         {
-            app.Contacts.Remove();
+            if (app.Contacts.GetContactNumber() == 0)
+            {
+                ContactData contact = new ContactData("fn", "ln");
+                contact.Company = "ccc";
+                contact.Address = "aaa";
+                app.Contacts.Create(contact);
+            }
+                app.Contacts.Remove();
+
         }
     }
 }
