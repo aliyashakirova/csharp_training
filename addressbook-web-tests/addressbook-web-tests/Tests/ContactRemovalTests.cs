@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using System.Collections.Generic;
 
 namespace WebAddressbookTests.Tests
 {
@@ -20,8 +21,13 @@ namespace WebAddressbookTests.Tests
                 contact.Address = "aaa";
                 app.Contacts.Create(contact);
             }
-                app.Contacts.Remove();
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            app.Contacts.Remove();
 
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+
+            oldContacts.RemoveAt(0);
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }

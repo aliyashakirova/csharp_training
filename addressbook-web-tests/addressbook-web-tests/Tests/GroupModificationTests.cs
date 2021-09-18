@@ -24,7 +24,15 @@ namespace WebAddressbookTests.Tests
                 GroupData newGroupData = new GroupData("zzz");
                 newGroupData.Header = "ttt";
                 newGroupData.Footer = "qqq";
-                app.Groups.Modify(newGroupData);
+
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            app.Groups.Modify(newGroupData);
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups[0].Name = newGroupData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
 
         }
 
@@ -41,7 +49,15 @@ namespace WebAddressbookTests.Tests
                 GroupData newGroupData = new GroupData("zzz");
                 newGroupData.Header = null;
                 newGroupData.Footer = null;
-                app.Groups.Modify(newGroupData);
+
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            app.Groups.Modify(newGroupData);
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups[0].Name = newGroupData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
 
         }
     }

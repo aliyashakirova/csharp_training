@@ -24,8 +24,26 @@ namespace WebAddressbookTests.Tests
                 ContactData newContactData = new ContactData("fn", "ln");
                 newContactData.Company = "sdfsd";
                 newContactData.Address = "sdfsd";
-                app.Contacts.Modify(newContactData);
-            }
+
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
+            app.Contacts.Modify(newContactData);
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+            oldContacts[lastContactIndex].Firstname = newContactData.Firstname;
+            oldContacts[lastContactIndex].Lastname = newContactData.Lastname;
+
+            app.Navigator.GoToHomePage();
+            app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
+            ContactData newContact = app.Contacts.GetContactData();
+            Assert.AreEqual(newContactData.Firstname, newContact.Firstname);
+
+            app.Navigator.GoToHomePage();
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
+        }
 
         [Test]
         public void ContactModificationTestOnlyFirstNLastNames()
@@ -40,8 +58,27 @@ namespace WebAddressbookTests.Tests
                 ContactData newContactData = new ContactData("aaa", "bbb");
                 newContactData.Company = null;
                 newContactData.Address = null;
+
+
+
+                List<ContactData> oldContacts = app.Contacts.GetContactList();
+                app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
                 app.Contacts.Modify(newContactData);
 
+                List<ContactData> newContacts = app.Contacts.GetContactList();
+                var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+                oldContacts[lastContactIndex].Firstname = newContactData.Firstname;
+                oldContacts[lastContactIndex].Lastname = newContactData.Lastname;
+
+                app.Navigator.GoToHomePage();
+                app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
+                ContactData newContact = app.Contacts.GetContactData();
+                Assert.AreEqual(newContactData.Firstname, newContact.Firstname);
+
+                app.Navigator.GoToHomePage();
+                oldContacts.Sort();
+                newContacts.Sort();
+                Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }
