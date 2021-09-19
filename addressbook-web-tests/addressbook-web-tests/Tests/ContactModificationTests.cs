@@ -26,11 +26,15 @@ namespace WebAddressbookTests.Tests
                 newContactData.Address = "sdfsd";
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
+            var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+            ContactData oldContactData = oldContacts[lastContactIndex];
             app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
             app.Contacts.Modify(newContactData);
 
+            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactNumber());
+
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+            lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
             oldContacts[lastContactIndex].Firstname = newContactData.Firstname;
             oldContacts[lastContactIndex].Lastname = newContactData.Lastname;
 
@@ -42,7 +46,17 @@ namespace WebAddressbookTests.Tests
             app.Navigator.GoToHomePage();
             oldContacts.Sort();
             newContacts.Sort();
+            
             Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactData contact in newContacts)
+            {
+                if (contact.Id == oldContactData.Id)
+                {
+                    Assert.AreEqual(newContactData.Firstname, contact.Firstname);
+                    Assert.AreEqual(newContactData.Lastname, contact.Lastname);
+                }
+            }
         }
 
         [Test]
@@ -62,11 +76,15 @@ namespace WebAddressbookTests.Tests
 
 
                 List<ContactData> oldContacts = app.Contacts.GetContactList();
+                var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+                ContactData oldContactData = oldContacts[lastContactIndex];
                 app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
                 app.Contacts.Modify(newContactData);
 
+                Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactNumber());
+
                 List<ContactData> newContacts = app.Contacts.GetContactList();
-                var lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
+                lastContactIndex = app.Contacts.GetLastContactIndex(app.Contacts.GetLastContact());
                 oldContacts[lastContactIndex].Firstname = newContactData.Firstname;
                 oldContacts[lastContactIndex].Lastname = newContactData.Lastname;
 
@@ -74,11 +92,22 @@ namespace WebAddressbookTests.Tests
                 app.Contacts.OpenLastCreatedContact(app.Contacts.GetLastContact());
                 ContactData newContact = app.Contacts.GetContactData();
                 Assert.AreEqual(newContactData.Firstname, newContact.Firstname);
+                Assert.AreEqual(newContactData.Lastname, newContact.Lastname);
 
                 app.Navigator.GoToHomePage();
                 oldContacts.Sort();
                 newContacts.Sort();
                 Assert.AreEqual(oldContacts, newContacts);
+
+
+                foreach (ContactData contact in newContacts)
+                {
+                    if (contact.Id == oldContactData.Id)
+                {
+                    Assert.AreEqual(newContactData.Firstname, contact.Firstname);
+                    Assert.AreEqual(newContactData.Lastname, contact.Lastname);
+                }
+                }
         }
     }
 }

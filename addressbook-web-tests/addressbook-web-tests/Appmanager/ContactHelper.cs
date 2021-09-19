@@ -28,6 +28,7 @@ namespace WebAddressbookTests
             //driver.FindElement(By.CssSelector("tr[name*='entry']>td>a[href*="+"'"+ lastcontact + "']")).Click();
             FillContactForm(newContactData);
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             manager.Navigator.ReturnToHomePage();
             return this;
         }
@@ -99,6 +100,7 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            contactCache = null;
             return this;
         }
         public ContactHelper RemoveContact()
@@ -106,6 +108,7 @@ namespace WebAddressbookTests
             //acceptNextAlert = true;
             driver.FindElement(By.CssSelector("input[name='selected[]']")).Click();
             driver.FindElement(By.CssSelector("input[value='Delete']")).Click();
+            contactCache = null;
             driver.SwitchTo().Alert().Accept();
             Thread.Sleep(10000);
             //driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
@@ -153,23 +156,31 @@ namespace WebAddressbookTests
             return driver.FindElements(By.Name("selected[]")).Count;
         }
 
+        private List<ContactData> contactCache = null;
+
+
         public List<ContactData> GetContactList()
         {
-            List<ContactData> contacts = new List<ContactData>();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name = 'entry']"));
-            foreach (IWebElement element in elements)
+            if (contactCache == null)
             {
-
-                var firstName = element.FindElement(By.CssSelector("tr[name='entry']>td:nth-child(3)"));
-                var lastName = element.FindElement(By.CssSelector("tr[name='entry']>td:nth-child(2)"));
-
-
-                contacts.Add(new ContactData(firstName.Text, lastName.Text)
+                contactCache = new List<ContactData>();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name = 'entry']"));
+                foreach (IWebElement element in elements)
                 {
-                    Id = element.FindElement(By.CssSelector("input[name*='selected']")).GetAttribute("value")
-                });
+
+                    var firstName = element.FindElement(By.CssSelector("tr[name='entry']>td:nth-child(3)"));
+                    var lastName = element.FindElement(By.CssSelector("tr[name='entry']>td:nth-child(2)"));
+
+
+                    contactCache.Add(new ContactData(firstName.Text, lastName.Text)
+                    {
+                        Id = element.FindElement(By.CssSelector("input[name*='selected']")).GetAttribute("value")
+                    });
+                }
+
+
             }
-            return contacts;
+            return new List<ContactData>(contactCache);
         }
 
        // public int GetLastContactIndex(string lastContactId)
