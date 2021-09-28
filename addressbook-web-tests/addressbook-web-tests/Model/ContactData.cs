@@ -230,7 +230,7 @@ namespace WebAddressbookTests
 
         public override string ToString()
         {
-            return "id=" + Id +"firstname=" +Firstname + "lastname"+ Lastname;
+            return "id=" + Id +"firstname=" +Firstname + "lastname="+ Lastname +"Address=" + Address + "Company=" + Company;
         }
 
         public bool Equals(ContactData other)
