@@ -206,21 +206,6 @@ namespace WebAddressbookTests
             };
         }
 
-        public ContactData GetAllContactInfoFromTable(int index)
-        {
-            manager.Navigator.GoToHomePage();
-            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"));
-            string lastName = cells[1].Text;
-            string firstName = cells[2].Text;
-            string address = cells[3].Text;
-            string allEmails = cells[4].Text;
-            string allPhones = cells[5].Text;
-            string allContactInfo = firstName +lastName + address + allPhones + allEmails;
-            return new ContactData(firstName, lastName)
-            {
-                AllContactInfo = allContactInfo.Replace("\n", "").Replace("\r", "")
-            };
-        }
 
         public ContactData GetContactInfoFromEditForm(int index)
         {
@@ -238,6 +223,7 @@ namespace WebAddressbookTests
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
             string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
 
+
             return new ContactData(firstName, lastName)
             {
                 Address = address,
@@ -246,8 +232,7 @@ namespace WebAddressbookTests
                 WorkPhone = workPhone,
                 Email1 = email1,
                 Email2 = email2,
-                Email3 = email3
-
+                Email3 = email3,
             };
         }
 
@@ -257,14 +242,33 @@ namespace WebAddressbookTests
             OpenContactInfo(index);
             string str = driver.FindElement(By.Id("content")).FindElement(By.TagName("b")).Text;
             string[] names = str.Split(' ');
-            string firstName = names[0];
-            string lastName = names[1];
+            string firstName;
+            string lastName;
+            if (names.Length == 2)
+                {
+                firstName = names[0];
+                lastName = names[1];
+                }
+            else
+            {
+                if (names.Length == 1)
+                {
+                    firstName = names[0];
+                    lastName = null;
+                }
+                else
+                {
+                    firstName = null;
+                    lastName = null;
+                }
+            }
 
             string allContactInfo = driver.FindElement(By.Id("content")).Text;
             return new ContactData(firstName, lastName)
             {
-                AllContactInfo = allContactInfo.Replace(" ", "").Replace(")", "").Replace("(", "").Replace("-","").Replace("\n", "").Replace("\r", "").Replace("H:","").Replace("W:", "").Replace("M:", "")
+                AllContactInfo = allContactInfo//.Replace(" ", "").Replace(")", "").Replace("(", "").Replace("-","").Replace("\n", "").Replace("\r", "").Replace("H:","").Replace("W:", "").Replace("M:", "")
             };
+
         }
 
         public void InitContactModification(int index)

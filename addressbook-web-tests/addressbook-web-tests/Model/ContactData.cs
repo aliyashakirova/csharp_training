@@ -11,6 +11,7 @@ namespace WebAddressbookTests
     {
         private string allPhones;
         private string allEmails;
+        private string allContacInfo;
 
         public ContactData(string firstname, string lastname)
         {
@@ -64,7 +65,7 @@ namespace WebAddressbookTests
             {
                 allPhones = value;
             }
-            }
+        }
 
         public string AllEmails
         {
@@ -87,7 +88,23 @@ namespace WebAddressbookTests
 
 
         public string AllContactInfo
-        { get; set;}
+        {
+            get
+            {
+                if (allContacInfo != null)
+                {
+                    return allContacInfo;
+                }
+                else
+                {
+                    return (CleanUpFLN(Firstname, Lastname) + CleanUpAddr(Address) + AllPhonesBlock(CleanUpHPh(HomePhone), CleanUpMPh(MobilePhone), CleanUpWPh(WorkPhone)) + AllPhonesBlock(CleanUp2(Email1),CleanUp2(Email2),CleanUp2(Email3))).Trim(new char[] { '\r', '\n' });
+                }
+            }
+            set
+            {
+                allContacInfo = value;
+            }
+        }
 
         public string CleanUp(string phone)
         {
@@ -95,8 +112,98 @@ namespace WebAddressbookTests
             {
                 return "";
             }
-           return phone.Replace(" ", "").Replace("-", "").Replace(")", "").Replace("(", "").Replace("-","") + "\r\n";
+            return phone.Replace(" ", "").Replace("-", "").Replace(")", "").Replace("(", "").Replace("-", "") + "\r\n";
 
+        }
+
+        public string CleanUpFLN(string fn, string ln)
+        {
+            if (fn == null || fn == "")
+            {
+                if (ln == null || ln == "")
+                {
+                    return "";
+                }
+                else
+                {
+                    return ln + "\r\n";
+                }
+            }
+            else
+            {
+                if (ln == null || ln == "")
+                {
+                    return fn + "\r\n";
+                }
+                else
+                {
+                    return fn + " " + ln + "\r\n";
+                }
+            }
+
+        }
+
+
+        public string CleanUpAddr(string address)
+        {
+            if (address == null || address == "")
+            {
+                return "";
+            }
+            return address + "\r\n";
+
+        }
+
+        public string CleanUpHPh(string hph)
+        {
+            if (hph == null || hph == "")
+            {
+                return "";
+            }
+            return "H: " + hph + "\r\n";
+
+        }
+
+        public string CleanUpMPh(string mph)
+        {
+            if (mph == null || mph == "")
+            {
+                return "";
+            }
+            return "M: " + mph + "\r\n";
+
+        }
+
+        public string CleanUpWPh(string wph)
+        {
+            if (wph == null || wph == "")
+            {
+                return "";
+            }
+            return "W: " + wph + "\r\n";
+
+        }
+
+        public string AllPhonesBlock(string newhph,string newmph, string newwph)
+        {
+            string allPhonesBlock = newhph + newmph + newwph;
+                if (allPhonesBlock == null || allPhonesBlock == "")
+                {
+                    return "";
+                }
+                else
+                {
+                    return "\r\n" + allPhonesBlock;
+}
+        }
+
+        public string CleanUp2(string em)
+        {
+            if (em == null || em == "")
+            {
+                return "";
+            }
+            return em + "\r\n";
         }
 
         public string Id { get; set; }
