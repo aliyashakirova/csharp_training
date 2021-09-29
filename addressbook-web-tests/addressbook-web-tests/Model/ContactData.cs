@@ -18,7 +18,9 @@ namespace WebAddressbookTests
             Firstname = firstname;
             Lastname = lastname;
         }
-
+        public ContactData()
+        {
+        }
         public ContactData(string firstname, string lastname, string company, string address)
         {
             Firstname = firstname;
@@ -223,14 +225,14 @@ namespace WebAddressbookTests
             return Id.CompareTo(other.Id);
         }
 
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+         //   return Id.GetHashCode();
+        //}
 
         public override string ToString()
         {
-            return "id=" + Id +"firstname=" +Firstname + "lastname="+ Lastname +"Address=" + Address + "Company=" + Company;
+            return "firstname=" +Firstname + "lastname="+ Lastname +"Address=" + Address + "Company=" + Company;
         }
 
         public bool Equals(ContactData other)
