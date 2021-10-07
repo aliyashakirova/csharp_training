@@ -37,12 +37,26 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Modify(ContactData contact, ContactData oldData)
+        {
+            OpenContact(oldData.Id);
+            FillContactForm(contact);
+            driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
 
-        public void OpenLastCreatedContact(string lastcontact)
+        public void OpenContact(string lastcontact)
         {
             //driver.Navigate().GoToUrl("http://localhost/addressbook/edit.php?id=" + lastcontact);
             driver.FindElement(By.CssSelector("tr[name*='entry']>td>a[href*=" + "'edit.php?id=" + lastcontact + "']")).Click();
         }
+        //public void OpenContact(string id)
+        //{
+        //    //driver.Navigate().GoToUrl("http://localhost/addressbook/edit.php?id=" + lastcontact);
+        //    driver.FindElement(By.CssSelector("tr[name*='entry']>td>a[href*=" + "'edit.php?id=" + id + "']")).Click();
+        //}
 
         public int GetLastContactIndex(string lastContactId)
         {
@@ -121,6 +135,19 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper RemoveContact(string id)
+        {
+            //acceptNextAlert = true;
+            driver.FindElement(By.CssSelector("input[name='selected[]'][id='" + id + "']")).Click();
+            driver.FindElement(By.CssSelector("input[value='Delete']")).Click();
+            contactCache = null;
+            driver.SwitchTo().Alert().Accept();
+            Thread.Sleep(10000);
+            //driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
+            return this;
+        }
+
         //public ContactHelper SelectContact(string index)
         //{
         //   driver.FindElement(By.Id(index)).Click();
@@ -156,6 +183,15 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             return this;
         }
+
+        public ContactHelper Remove(ContactData contact)
+        {
+            RemoveContact(contact.Id);
+            manager.Navigator.GoToHomePage();
+            return this;
+        }
+
+
         public int GetContactNumber()
         {
             //return driver.FindElements(By.Name("selected[]")).Count;

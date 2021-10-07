@@ -8,11 +8,12 @@ using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Linq;
 
 namespace WebAddressbookTests.Tests
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactData> RandomContactDataProvider()
         {
@@ -81,12 +82,12 @@ namespace WebAddressbookTests.Tests
         [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
             app.Contacts.Create(contact);
 
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactNumber());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Add(new ContactData(contact.Firstname, contact.Lastname) { Id = app.Contacts.GetLastContact().ToString() });
             oldContacts.Sort();
             newContacts.Sort();
@@ -117,16 +118,25 @@ namespace WebAddressbookTests.Tests
         {
             ContactData contact = new ContactData("a'", "b'");
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
             app.Contacts.Create(contact);
 
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactNumber());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Add(new ContactData(contact.Firstname, contact.Lastname) { Id = app.Contacts.GetLastContact().ToString() });
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
+        }
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            List<ContactData> fromUi = app.Contacts.GetContactList();
+            AddressBookDB db = new AddressBookDB();
+            List<ContactData> fromDb = ContactData.GetAll();
+
         }
     }
 }

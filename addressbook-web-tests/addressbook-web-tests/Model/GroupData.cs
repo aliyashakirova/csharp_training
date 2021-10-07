@@ -40,7 +40,7 @@ namespace WebAddressbookTests
 
         public override string ToString()
         {
-            return "name=" + Name + "\nheader= " + Header + "\nfooter= " + Footer;
+            return "name=" + Name + "\nheader= " + Header + "\nfooter= " + Footer + "\nid= " + Id;
         }
 
         public int CompareTo(GroupData other)
@@ -62,10 +62,10 @@ namespace WebAddressbookTests
         [Column(Name = "group_name")]
         public string Name { get; set; }
 
-        [Column(Name = "group_header")]
+        //[Column(Header = "group_header")]
         public string Header { get; set; }
 
-        [Column(Name = "group_footer")]
+        //[Column(Footer = "group_footer")]
         public string Footer { get; set; }
 
         [Column(Name = "group_id"), PrimaryKey, Identity]

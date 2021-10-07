@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LinqToDB.Mapping;
 
 namespace WebAddressbookTests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhones;
@@ -29,27 +31,38 @@ namespace WebAddressbookTests
             Address = address;
         }
 
-
+        [Column (Name = "firstname")]
         public string Firstname { get; set; }
 
+        [Column(Name = "lastname")]
         public string Lastname { get; set; }
 
+        [Column(Name = "company")]
         public string Company { get; set; }
 
+        [Column(Name = "address")]
         public string Address { get; set; }
 
+        [Column(Name = "email")]
         public string Email1 { get; set; }
 
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
 
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
 
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
 
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
 
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
 
+        [Column(Name = "id"), PrimaryKey, Identity]
+        public string Id { get; set; }
 
         public string AllPhones {
             get
@@ -208,8 +221,6 @@ namespace WebAddressbookTests
             return em + "\r\n";
         }
 
-        public string Id { get; set; }
-
         public int CompareTo(ContactData other)
         {
             if (Object.ReferenceEquals(other, null))
@@ -246,6 +257,13 @@ namespace WebAddressbookTests
                 return true;
             }
             return Id == other.Id;// && Firstname == other.Firstname && Lastname == other.Lastname;
+        }
+        public static List<ContactData> GetAll()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from g in db.Contacts select g).ToList();
+            }
         }
     }
 }
