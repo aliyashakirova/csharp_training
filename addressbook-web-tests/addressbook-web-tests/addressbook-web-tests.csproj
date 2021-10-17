@@ -121,6 +121,8 @@
     <Compile Include="Model\ContactData.cs" />
     <Compile Include="Appmanager\HelperBase.cs" />
     <Compile Include="Appmanager\ContactHelper.cs" />
+    <Compile Include="Model\GroupContactRelation.cs" />
+    <Compile Include="Tests\ContactsInGroupsTests.cs" />
     <Compile Include="Tests\AuthTestBase.cs" />
     <Compile Include="Tests\ContactTestBase.cs" />
     <Compile Include="Tests\GroupTestBase.cs" />

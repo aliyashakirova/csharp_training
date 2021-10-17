@@ -24,7 +24,49 @@ namespace WebAddressbookTests
         {
         }
 
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
+        }
 
+        public void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void RemoveContactFromGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectGroupForContactRemoval(group.Name);
+            SelectContact(contact.Id);
+            SunbmitRemovalOfContactFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
+        }
+
+        private void SelectGroupForContactRemoval(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
+        }
+
+        private void SunbmitRemovalOfContactFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
 
         public ContactHelper Modify(ContactData newContactData)
         {
@@ -148,11 +190,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        //public ContactHelper SelectContact(string index)
-        //{
-        //   driver.FindElement(By.Id(index)).Click();
-        //    return this;
-        //}
+        public void SelectContact(string contactId)
+        {
+           driver.FindElement(By.Id(contactId)).Click();
+        }
 
         private string CloseAlertAndGetItsText()
         {
