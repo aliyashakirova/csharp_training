@@ -9,7 +9,7 @@ namespace addressbook_tests_autoit
 {
     public class TestBase
     {
-        ApplicationManager app;
+        public ApplicationManager app;
 
         [OneTimeSetUp]
         public void InitApplication()
@@ -17,6 +17,7 @@ namespace addressbook_tests_autoit
             app = new ApplicationManager();
 
         }
+
        [OneTimeTearDown]
          public void StopApplication()
         {
