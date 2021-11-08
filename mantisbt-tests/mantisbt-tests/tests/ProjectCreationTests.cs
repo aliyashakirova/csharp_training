@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -16,20 +17,25 @@ namespace mantis_tests
             Random rnd = new Random();
             int value = rnd.Next(0, 10000);
             ProjectData project = new ProjectData("name" + Convert.ToString(value));
+            AccountData account = new AccountData()
+            {
+                Name = "administrator",
+                Password = "root"
+            };
 
-            //app.Navigator.GoToMenuProjectsListsPage();
-            List<ProjectData> oldProjects = app.Projects.GetProjectsList();
+            List<ProjectData> oldProjectsList = app.API.APIGetProjectsList(account);
+
             app.Projects.Create(project);
 
 
-            Assert.AreEqual(oldProjects.Count + 1, app.Projects.GetProjectsNumber());
+            Assert.AreEqual(oldProjectsList.Count + 1, app.Projects.GetProjectsNumber());
 
-            List<ProjectData> newProjects = app.Projects.GetProjectsList();
+            List<ProjectData> newProjectsList = app.API.APIGetProjectsList(account);
 
-            oldProjects.Add(new ProjectData(project.ProjectName){ Id = app.Projects.GetLastProject().ToString() });
-            oldProjects.Sort();
-            newProjects.Sort();
-            Assert.AreEqual(oldProjects, newProjects);
+            oldProjectsList.Add(new ProjectData(project.ProjectName){ Id = app.Projects.GetLastProject().ToString() });
+            oldProjectsList.Sort();
+            newProjectsList.Sort();
+            Assert.AreEqual(oldProjectsList, newProjectsList);
         }
 
     }

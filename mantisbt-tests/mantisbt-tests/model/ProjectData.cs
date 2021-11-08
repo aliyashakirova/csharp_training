@@ -19,6 +19,10 @@ namespace mantis_tests
             this.projectName = projectName;
         }
 
+        public ProjectData()
+        {
+        }
+
         public string ProjectName
         {
             get
@@ -31,21 +35,12 @@ namespace mantis_tests
             }
         }
         public string Id { get; set; }
+        public string Name { get;set; }
 
         public override string ToString()
         {
             return "projectname=" + ProjectName;
         }
-
-       // public int CompareTo(ProjectData other)
-       // {
-        //    if (Object.ReferenceEquals(other, null))
-         //   {
-        //        return 1;
-        //    }
-
-         //   return Id.CompareTo(other.Id);
-       // }
 
         public int CompareTo(ProjectData other)
         {
@@ -54,8 +49,18 @@ namespace mantis_tests
                 return 1;
             }
 
-            return ProjectName.CompareTo(other.ProjectName);
+            return Id.CompareTo(other.Id);
         }
+
+       // public int CompareTo(ProjectData other)
+        //{
+         //   if (Object.ReferenceEquals(other, null))
+          //  {
+           //     return 1;
+            //}
+
+            //return ProjectName.CompareTo(other.ProjectName);
+        //}
 
 
         public bool Equals(ProjectData other)
